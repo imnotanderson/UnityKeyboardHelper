@@ -5,8 +5,12 @@ using System;
 
 public class UnityKeyboardHelper :MonoBehaviour{
 
+#if UNITY_IOS
 	[DllImport("__Internal")]
 	static extern void _Init (int mode);
+#else
+   	static void _Init(int mode) { }
+#endif
 
 	public enum MODE{
 		PUSH_SCREEN = 0,
@@ -20,6 +24,7 @@ public class UnityKeyboardHelper :MonoBehaviour{
 			return;
 		_Init ((int)mode);
 		recvGo = new GameObject ("[UnityKeyboardHelper]");
+		recvGo.hideFlags = HideFlags.HideInHierarchy;
 		recvGo.AddComponent<UnityKeyboardHelper> ().recvPerc = recvPerc;
 		DontDestroyOnLoad (recvGo);
 	}
